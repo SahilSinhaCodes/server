@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js"; // ✅ Include .js extension!
 import authRoutes from "./routes/auth.js"; // ✅ Include .js extension!
+import projectRoutes from "./routes/project.js";
 
 // Load .env variables
 dotenv.config();
@@ -17,8 +18,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // Routes
 app.use("/api/auth", authRoutes);
+
+// inside app setup
+app.use("/api/projects", projectRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...");
