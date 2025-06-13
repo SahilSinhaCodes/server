@@ -137,3 +137,18 @@ export const removeMember = async (req, res) => {
   }
 };
 
+// @desc    Get a single project by ID
+export const getProjectById = async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id).populate("teamMembers", "name email");
+
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+
+    res.json(project);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch project" });
+  }
+};
+
