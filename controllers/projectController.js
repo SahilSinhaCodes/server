@@ -97,7 +97,9 @@ export const addMember = async (req, res) => {
     project.teamMembers.push(userToAdd._id);
     await project.save();
 
-    res.json({message: "Member added successfully", project});
+    const updatedProject = await Project.findById(project._id).populate("teamMembers", "name email");
+    res.json({ message: "Member added successfully", project: updatedProject });
+    
   } catch (err) {
     console.error("Add Member Error:", err);
     res.status(500).json({message: "Failed to add member"});
@@ -130,7 +132,9 @@ export const removeMember = async (req, res) => {
     );
     await project.save();
 
-    res.json({message: "Member removed successfully", project});
+    const updatedProject = await Project.findById(project._id).populate("teamMembers", "name email");
+    res.json({ message: "Member removed successfully", project: updatedProject });
+
   } catch (err) {
     console.error("Remove Member Error:", err);
     res.status(500).json({message: "Failed to remove member"});
