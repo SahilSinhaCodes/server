@@ -6,6 +6,8 @@ import {
   deleteTicket,
   assignTicket
 } from '../controllers/ticketController.js';
+import { getTicketById } from '../controllers/ticketController.js';
+
 import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
@@ -15,6 +17,8 @@ router.get('/project/:projectId', authMiddleware, getTicketsByProject);
 router.put('/:id', authMiddleware, updateTicket);
 router.delete('/:id', authMiddleware, deleteTicket);
 router.post('/:id/assign', authMiddleware, assignTicket);
+
+router.get('/:id', authMiddleware, getTicketById);
 
 export default router;
 

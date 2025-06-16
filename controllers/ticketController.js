@@ -1,5 +1,5 @@
-import User from "../models/User.js"; // needed to resolve assignee
-import Project from "../models/Project.js"; // optional, to validate projectId
+import User from "../models/User.js";
+import Project from "../models/Project.js";
 import Ticket from "../models/Ticket.js";
 
 // @desc    Create a new ticket
@@ -20,7 +20,6 @@ export const createTicket = async (req, res) => {
       return res.status(400).json({ message: "Missing required fields" });
     }
 
-    // Optional: Validate project exists
     const project = await Project.findById(projectId);
     if (!project) {
       return res.status(404).json({ message: "Project not found" });
@@ -65,6 +64,24 @@ export const getTicketsByProject = async (req, res) => {
     res.json(tickets);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch tickets" });
+  }
+};
+
+// @desc    Get a single ticket by ID
+export const getTicketById = async (req, res) => {
+  try {
+    const ticket = await Ticket.findById(req.params.id)
+      .populate("assignee", "name email")
+      .populate("createdBy", "name email");
+
+    if (!ticket) {
+      return res.status(404).json({ message: "Ticket not found" });
+    }
+
+    res.json(ticket);
+  } catch (err) {
+    console.error("Error fetching ticket by ID:", err);
+    res.status(500).json({ message: "Failed to fetch ticket" });
   }
 };
 

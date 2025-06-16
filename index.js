@@ -6,6 +6,7 @@ import connectDB from "./config/db.js"; // ✅ Include .js extension!
 import authRoutes from "./routes/auth.js"; // ✅ Include .js extension!
 import projectRoutes from "./routes/project.js";
 import ticketRoutes from "./routes/ticket.js";
+import commentRoutes from "./routes/comment.js";
 // Load .env variables
 dotenv.config();
 
@@ -26,6 +27,8 @@ app.use("/api/auth", authRoutes);
 app.use("/api/projects", projectRoutes);
 
 app.use("/api/tickets", ticketRoutes);
+
+app.use("/api/comments", commentRoutes);
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
