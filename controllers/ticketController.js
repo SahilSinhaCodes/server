@@ -52,20 +52,38 @@ export const createTicket = async (req, res) => {
   }
 };
 
-// @desc    Get all tickets for a specific project
+// @desc    Get all tickets for a specific project with optional filters
 export const getTicketsByProject = async (req, res) => {
   try {
     const { projectId } = req.params;
+    const { status, priority, search } = req.query;
 
-    const tickets = await Ticket.find({ projectId })
+    const filter = { projectId };
+
+    if (status) {
+      filter.status = status;
+    }
+
+    if (priority) {
+      filter.priority = priority;
+    }
+
+    if (search) {
+      // Case-insensitive regex search in title
+      filter.title = { $regex: search, $options: "i" };
+    }
+
+    const tickets = await Ticket.find(filter)
       .populate("assignee", "name email")
       .sort({ createdAt: -1 });
 
     res.json(tickets);
   } catch (err) {
+    console.error("Fetch Tickets Error:", err);
     res.status(500).json({ message: "Failed to fetch tickets" });
   }
 };
+
 
 // @desc    Get a single ticket by ID
 export const getTicketById = async (req, res) => {
