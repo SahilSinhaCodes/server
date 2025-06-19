@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
 
+// models/Ticket.js
+
 const ticketSchema = new mongoose.Schema(
   {
-    title: {
-      type: String,
-      required: true,
-    },
+    title: { type: String, required: true },
     description: String,
     priority: {
       type: String,
@@ -31,9 +30,16 @@ const ticketSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    // ✅ New image field
+    image: {
+      type: String, // will store image path like "/uploads/filename.png"
+      default: "",
+    },
   },
   { timestamps: true }
 );
+
 
 const Ticket = mongoose.model("Ticket", ticketSchema);
 export default Ticket;

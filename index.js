@@ -9,7 +9,7 @@ import ticketRoutes from "./routes/ticket.js";
 import commentRoutes from "./routes/comment.js";
 // Load .env variables
 dotenv.config();
-
+import path from "path";
 // Connect to DB
 connectDB();
 
@@ -29,6 +29,9 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/tickets", ticketRoutes);
 
 app.use("/api/comments", commentRoutes);
+
+app.use("/uploads", express.static(path.resolve("uploads")));
+
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
